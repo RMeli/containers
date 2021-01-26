@@ -1,6 +1,5 @@
 FROM nvidia/cuda:11.2.0-devel-ubuntu20.04
 
-# Timezone
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
