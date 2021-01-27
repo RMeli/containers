@@ -59,3 +59,7 @@ RUN cmake .. -DCUDA_ARCH_NAME=All && make -j 4
 RUN make install
 
 WORKDIR /
+
+ENV LD_LIBRARY_PATH=/usr/local/lib/:${LD_LIBRARY_PATH}
+
+RUN python -m pip install GPUtil

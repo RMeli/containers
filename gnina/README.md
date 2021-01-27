@@ -1,6 +1,6 @@
 # GNINA Docker Container
 
-Docker container for [GNINA]().
+Docker container for [GNINA](https://github.com/gnina/gnina).
 
 Includes:
 
@@ -21,13 +21,13 @@ docker build -t gnina .
 The Docker container can be saved
 
 ```
-docker save -o ./gnina.img gnina:latest
+docker save -o ./gnina.tar gnina:latest
 ```
 
 and loaded on a differe host:
 
 ```
-docker load -i ./gnina.img
+docker load -i ./gnina.tar
 ```
 
 ### Run
