@@ -38,6 +38,21 @@ docker run --gpus all -ti gnina /bin/bash
 
 ## Notes
 
+### `.dockerignore`
+
+The `.dockerignore` file allows to ignore possible `*.tar` images in the current directory, which would be included in the Docker context sent to the Docker deamon.
+
+### Tests
+
+`libmolgrid` and `gnina` tests are not run when building the container.
+
+```
+docker run --gpus all -it gnina /bin/bash
+
+cd /software/libmolgrid/build/ && ctest
+cd /sofware/gnina/build/ && ctest
+```
+
 ### Timenzone
 
 Manual entry of the timezone is required when building the container. The following addition solves the issue:
