@@ -1,0 +1,47 @@
+name: myenv
+channels:
+  - conda-forge
+  - pytorch
+  - rdkit
+dependencies:
+  - python=3.7
+  - pip
+  - ipython
+
+  # Libraries
+  - boost
+  - boost-cpp
+  - py-boost
+  #- gxx_linux-64
+  #- protobuf
+  - cairo
+  - pillow
+  - eigen
+  - zlib
+
+  - numpy
+  - scipy
+  - pandas
+  - scikit-image
+
+  # Chemistry
+  - rdkit
+  - openbabel
+  - biopython
+
+  # Pytorch
+  #- pytorch=1.7
+  #- torchvision
+
+  # pip
+  - pip:
+    - torch # conda installation is GPU-only...
+    - torchvision
+    - pyquaternion # https://github.com/KieranWynn/pyquaternion/issues/37
+
+  # Misc
+  - psutil
+  - GPUtil
+
+  # Dev
+  - pytest
