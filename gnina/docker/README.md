@@ -4,7 +4,6 @@ Docker container for [GNINA](https://github.com/gnina/gnina).
 
 Includes:
 
-* [Open Babel](https://github.com/openbabel/openbabel)
 * [libmolgrid](https://github.com/gnina/libmolgrid)
 * [gnina](https://github.com/gnina/gnina)
 
