@@ -3,60 +3,54 @@ FROM nvidia/cuda:11.2.0-devel-ubuntu20.04
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt update -y
+RUN apt update -y && apt upgrade -y \
+    && apt install -y vim git wget curl parallel \
+        build-essential cmake valgrind \
+        libboost-all-dev libatlas-base-dev libeigen3-dev \
+        libgoogle-glog-dev libprotobuf-dev libhdf5-serial-dev \
+        librdkit-dev \
+        protobuf-compiler \
+        python3-dev python3-pip \
+    && cmake --version
 
-RUN apt install -y vim git wget curl parallel
-
-RUN apt install -y build-essential cmake valgrind
-RUN cmake --version
-
-RUN apt install -y libboost-all-dev libatlas-base-dev libeigen3-dev \
-    libgoogle-glog-dev libprotobuf-dev libhdf5-serial-dev \
-    librdkit-dev \
-    protobuf-compiler
-
-RUN apt install -y python3-dev python3-pip
-RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip
-RUN which python && which pip && python -V
-RUN python -m pip install -U pip
-RUN python -m pip install ipython pytest \
-    numpy scipy pandas scikit-learn \
+# python
+RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip \
+    && which python && which pip && python -V \
+    && python -m pip install -U pip \
+    && python -m pip install \
+        ipython pytest \
+        numpy scipy pandas scikit-learn \
     matplotlib seaborn scikit-image \
     torch torchvision \
     biopython pyquaternion protobuf psutil GPUtil
 
 RUN mkdir /software
+WORKDIR /software
 
 # OpenBabel
-RUN apt purge --auto-remove libopenbabel-dev
-RUN apt -y install libxml2-dev libcairo2-dev rapidjson-dev swig
-WORKDIR /software
-RUN git clone https://github.com/openbabel/openbabel.git
-RUN mkdir /software/openbabel/build
-WORKDIR /software/openbabel/build/
-RUN cmake .. -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF \
-    && make -j 4
-RUN ctest && make install
+RUN apt purge --auto-remove libopenbabel-dev \
+    && apt -y install libxml2-dev libcairo2-dev rapidjson-dev swig \
+    && git clone https://github.com/openbabel/openbabel.git \
+    && mkdir /software/openbabel/build && cd /software/openbabel/build \
+    && cmake .. -DWITH_MAEPARSER=OFF -DWITH_COORDGEN=OFF \
+    && make -j 4 \
+    && ctest \
+    && make install
 
 # libmolgrid
-RUN apt install -y swig
-RUN python -m pip install openbabel
-WORKDIR /software
-RUN git clone https://github.com/gnina/libmolgrid.git
-RUN mkdir /software/libmolgrid/build
-WORKDIR /software/libmolgrid/build
-RUN cmake .. && make -j 4
-#RUN ctest -V && make install
-RUN make install
+RUN python -m pip install openbabel \
+    && git clone https://github.com/gnina/libmolgrid.git \
+    && mkdir /software/libmolgrid/build && cd /software/libmolgrid/build \
+    && cmake .. \
+    && make -j 4 \
+    && make install
 
 # gnina
-WORKDIR /software
-RUN git clone https://github.com/gnina/gnina.git
-RUN mkdir /software/gnina/build
-WORKDIR /software/gnina/build
-RUN cmake .. -DCUDA_ARCH_NAME=All && make -j 4
-#RUN ctest -V && make install
-RUN make install
+RUN git clone https://github.com/gnina/gnina.git \
+    && mkdir /software/gnina/build && cd /software/gnina/build \
+    && cmake .. -DCUDA_ARCH_NAME=All \
+    && make -j 4 \
+    && make install
 
 WORKDIR /
 
