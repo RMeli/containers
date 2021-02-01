@@ -48,6 +48,8 @@ The `.dockerignore` file allows to ignore possible `*.tar` images in the current
 ```
 docker run --gpus all -it gnina /bin/bash
 
+. /root/miniconda3/etc/profile.d/conda.sh && conda activate myenv
+
 cd /software/libmolgrid/build/ && ctest
 cd /sofware/gnina/build/ && ctest
 ```

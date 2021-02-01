@@ -12,16 +12,18 @@ dependencies:
   - boost
   - boost-cpp
   - py-boost
-  #- gxx_linux-64
-  #- protobuf
   - cairo
   - pillow
   - eigen
   - zlib
+  - protobuf
 
   - numpy
   - scipy
   - pandas
+
+  - matplotlib
+  - seaborn
   - scikit-image
 
   # Chemistry
