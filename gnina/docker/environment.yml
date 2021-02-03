@@ -25,6 +25,7 @@ dependencies:
   - matplotlib
   - seaborn
   - scikit-image
+  - pydotplus
 
   # Chemistry
   - rdkit

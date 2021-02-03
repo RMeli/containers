@@ -63,19 +63,6 @@ ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ```
 
-### Python
-
-Python 3 is enforced
-
-```
-RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip
-```
-
 ### Open Babel
 
-The Python version of Open Babel (including `pybel`) needs `swig` to be installed:
-
-```
-RUN apt install -y swig
-RUN python -m pip install openbabel
-```
+The Python version of Open Babel (including `pybel`) needs `swig` to be installed.
