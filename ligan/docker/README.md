@@ -20,7 +20,7 @@ docker build -t gnina .
 The Docker container can be saved
 
 ```
-docker save -o ./gnina.tar gnina:latest
+docker save -o ./gnina.tar gnina
 ```
 
 and loaded on a differe host:
@@ -36,6 +36,13 @@ docker run --gpus all -ti gnina /bin/bash
 ```
 
 ## Notes
+
+### Singularity
+
+[Singularity](https://sylabs.io/singularity/) images can be easily created from local Docker images as follows:
+```
+sudo singularity build <IMAGE_NAME>.sif docker-daemon://<TAG>
+```
 
 ### `.dockerignore`
 

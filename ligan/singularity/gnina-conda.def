@@ -1,0 +1,84 @@
+Bootstrap: docker
+From: nvidia/cuda:11.2.0-devel-ubuntu20.04
+
+%setup
+
+%files
+
+    environment.yml /opt/environment.yml
+
+%environment
+
+    export TZ=Europe/London
+    alias ll="ls -l"
+
+    export RDKIT_CONTRIB=/root/miniconda3/envs/myenv/share/RDKit/Contrib/
+    export PYTHONPATH=${RDKIT_CONTRIB}:${PYTHONPATH}
+
+    export SINGULARITYENV_CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
+
+%post
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+    apt update -y && apt upgrade -y \
+        && apt install -y vim git wget curl parallel \
+            build-essential cmake valgrind \
+            libatlas-base-dev \
+            libgoogle-glog-dev libhdf5-serial-dev \
+        && cmake --version 
+
+    cd /opt/ \
+        && wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+        && bash Miniconda3-latest-Linux-x86_64.sh -bp /opt/miniconda3/ \
+        && rm -f Miniconda3-latest-Linux-x86_64.sh
+
+    . /opt/miniconda3/etc/profile.d/conda.sh \
+        && conda config --add channels conda-forge \
+        && conda install -y conda \
+        && conda update --all --yes \
+        && conda --version \
+        && conda env create -f /opt/environment.yml \
+        && conda clean --all --yes \
+        && conda activate myenv
+    
+    mkdir /software
+
+    cd /software \
+        && git clone https://github.com/gnina/libmolgrid.git \
+        && mkdir /software/libmolgrid/build && cd /software/libmolgrid/build \
+        && cmake ..  \
+            -DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+            -DPYTHON_LIBRARY=$(python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))") \
+            -DOPENBABEL3_INCLUDE_DIR=/opt/miniconda3/envs/myenv/include/openbabel3/ \
+            -DOPENBABEL3_LIBRARIES=/opt/miniconda3/envs/myenv/lib/libopenbabel.so \
+            -DZLIB_ROOT=/opt/miniconda3/envs/myenv/ \
+            -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets \
+            -DCMAKE_INSTALL_PREFIX=/opt/miniconda3/envs/myenv/ \
+        && make -j 4 \
+        && make install
+
+    cd /software \
+        && git clone https://github.com/gnina/gnina.git \
+        && mkdir /software/gnina/build && cd /software/gnina/build \
+        && cmake .. \
+            -DCUDA_ARCH_NAME=All \
+            -DPYTHON_EXECUTABLE=/opt/miniconda3/envs/myenv/bin/python \
+            -DPYTHON_LIBRARY=/opt/miniconda3/envs/myenv/lib/libpython3.7m.so \
+            -DPYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+            -DCMAKE_CUDA_FLAGS=-Wno-deprecated-gpu-targets \
+            -DCMAKE_INSTALL_PREFIX=/opt/miniconda3/envs/myenv/ \
+        && make -j 4 \
+        && make install
+
+%runscript
+
+    . /opt/miniconda3/etc/profile.d/conda.sh && conda activate myenv
+
+    echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> $SINGULARITY_ENVIRONMENT
+    echo "conda activate myenv" >> $SINGULARITY_ENVIRONMENT
+
+%test
+    . /opt/miniconda3/etc/profile.d/conda.sh && conda activate myenv
+
+    cd /software/libmolgrid/build && ctest  -V
+    cd /software/gnina/build && ctest  -V
