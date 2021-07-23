@@ -1,4 +1,4 @@
-# GNINA Docker Container
+# liGAN Docker Container
 
 Docker container for [GNINA](https://github.com/gnina/gnina).
 
