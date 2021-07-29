@@ -89,3 +89,10 @@ Manual entry of the timezone is required when building containers. The following
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ```
+
+## Acknowledgement
+
+The following people contributed code and/or knowledge not reported in the commit history:
+* Sebastien Buchoux (@seb-buch)
+
+Their contributions is akcnowledged also in definition files, where appropriate.
