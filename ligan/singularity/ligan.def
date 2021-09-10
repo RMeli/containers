@@ -39,9 +39,12 @@ From: nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
     pip install numpy pandas pytest scipy
     pip install torch torchvision torchaudio
     pip install GPUtil psutil pynvml
-    pip install seaborn scikit-image parse protobuf
+    pip install matplitlib seaborn scikit-image 
+    pip install parse protobuf
     pip install pydot
-    pip install open3d
+    pip install open3d pydot pymol3d
+    pip install black flake8
+    pip install jupyter
 
     git clone -b Release_2021_03_1 --depth=1 https://github.com/rdkit/rdkit.git "${ROOTDIR}/rdkit"
     cd "${ROOTDIR}/rdkit"
