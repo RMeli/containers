@@ -93,6 +93,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ## Acknowledgement
 
 The following people contributed code and/or knowledge not reported in the commit history:
+* Irfan Alibay (@IAlibay)
 * Sebastien Buchoux (@seb-buch)
 
 Their contributions is akcnowledged also in definition files, where appropriate.
