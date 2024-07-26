@@ -46,6 +46,12 @@ singularity run --nv --app <APP> <CONTAINER>.sif [<ARGS>]
 docker build -t <TAG> .
 ```
 
+It is possible to build a container from a specific file:
+
+```bash
+docker build -t <TAG> -f <DOCKERFILE> .
+```
+
 ### Save & Load
 
 A [Docker](https://www.docker.com/) container can be saved
