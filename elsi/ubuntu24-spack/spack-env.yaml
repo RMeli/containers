@@ -1,0 +1,28 @@
+spack:
+  specs:
+    - "dla-future@0.6.0"
+    - "dla-future-fortran@0.2.0"
+  packages:
+    blas:
+      require:
+        - openblas
+    lapack:
+      require:
+        - openblas
+    scalapack:
+      require:
+        - netlib-scalapack
+    mpi:
+      require:
+        - mpich
+    mpich:
+      require:
+        - netmod=tcp
+        - device=ch3
+  view:
+    default:
+      root: /spack-view/
+      exclude:
+      - gcc-runtime
+  concretizer:
+    unify: true

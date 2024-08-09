@@ -1,0 +1,44 @@
+FROM  ubuntu:24.04
+
+ENV TZ=US/Eastern
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && \
+    apt-get install -y \
+        software-properties-common \
+        cmake \
+        git \
+        vim \
+        htop \
+        wget \
+        environment-modules \
+        bison \
+        flex \
+        python3-venv \
+        build-essential \
+        libmpfr-dev \
+        libgmp3-dev \
+        libmpc-dev \
+        unzip hwloc libhwloc-dev \
+        ninja-build \
+        gfortran \
+        gdb \
+        pkg-config && \
+    apt-get clean
+
+WORKDIR /opt/spack
+
+RUN git init --quiet && \
+    git remote add origin https://github.com/spack/spack.git && \
+    git fetch --quiet --depth 1 origin tag develop-2024-07-14 --no-tags && \
+    git checkout --quiet FETCH_HEAD
+ENV PATH="/opt/spack/bin:${PATH}"
+RUN spack compiler find
+RUN spack external find --all --not-buildable
+
+COPY spack-env.yaml .
+RUN spack env create myenv ./spack-env.yaml
+RUN spack -e myenv concretize -f
+RUN spack -e myenv install --verbose --fail-fast
+
+RUN eval $(spack env activate myenv --sh)
