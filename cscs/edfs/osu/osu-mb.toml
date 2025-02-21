@@ -1,0 +1,4 @@
+image = "quay.io#madeeks/osu-mb:6.2-mpich4.1-ubuntu22.04-arm64"
+
+[annotations]
+com.hooks.cxi.enabled = "true"
