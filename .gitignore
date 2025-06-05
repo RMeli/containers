@@ -1,5 +1,4 @@
-# Docker images
 *.tar
-
-# Singularity images
-*.sif
+*.sif # singularity
+*.squashfs
+*.sqsh
