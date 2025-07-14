@@ -1,0 +1,10 @@
+image = "/users/rmeli/git/work/containers/cscs/mtt/mtt-2025.6.squashfs"
+mounts = ["/iopsstor/scratch/", "/capstor/store/", "/capstor/scratch/"]
+workdir = "/capstor/store/cscs/cscs/csstaff/rmeli/support/dtisi-65738/"
+
+[annotations]
+com.hooks.aws_ofi_nccl.enabled = "true"
+com.hooks.aws_ofi_nccl.variant = "cuda12"
+
+# [env]
+# NCCL_DEBUG = "INFO"
