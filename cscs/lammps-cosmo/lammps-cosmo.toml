@@ -1,0 +1,3 @@
+image = "/capstor/scratch/cscs/rmeli/lammps-cosmo.squashfs"
+workdir = "/users/rmeli/git/work/containers/cscs/lammps-cosmo/"
+mounts = ["/users/rmeli"]
